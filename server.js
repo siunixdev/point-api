@@ -2,8 +2,11 @@ const express = require("express")
 const cors = require("cors")
 const cookieSession = require("cookie-session")
 const dotenv = require('dotenv')
+const db = require("./app/models")
+const dbConfig = require("./app/config/db.config")
 
 dotenv.config()
+
 const app = express()
 app.use(cors())
 
@@ -14,6 +17,19 @@ app.use(express.json())
 app.use(express.urlencoded({
   extended: true
 }))
+
+const Role = db.role
+db.mongoose
+  .connect(dbConfig.ATLAS_CONNECTION, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Successfully connect to MongoDB");
+  })
+  .catch(err => {
+    console.error(`Connection Error : ${err}`);
+  })
 
 app.use(
   cookieSession({
