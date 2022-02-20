@@ -4,6 +4,7 @@ const cookieSession = require("cookie-session")
 const dotenv = require('dotenv')
 const db = require("./app/models")
 const dbConfig = require("./app/config/db.config")
+const initialData = require('./app/config/initialData.config')
 
 dotenv.config()
 
@@ -18,7 +19,7 @@ app.use(express.urlencoded({
   extended: true
 }))
 
-const Role = db.role
+
 db.mongoose
   .connect(dbConfig.ATLAS_CONNECTION, {
     useNewUrlParser: true,
@@ -26,9 +27,11 @@ db.mongoose
   })
   .then(() => {
     console.log("Successfully connect to MongoDB");
+    initialData()
   })
   .catch(err => {
     console.error(`Connection Error : ${err}`);
+    process.exit()
   })
 
 app.use(
