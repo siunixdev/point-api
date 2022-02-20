@@ -36,17 +36,18 @@ db.mongoose
 
 app.use(
   cookieSession({
-    name: "point-session",
-    secret: "COOKIE_SECRET",
+    name: process.env.SESSION_NAME,
+    secret: process.env.COOKIE_SECRET,
   })
 )
 
-// simple route
+// route
 app.get("/", (req, res) => {
   res.json({
     message: "Welcome to Point App"
   })
 })
+require('./app/routes/auth.route')(app)
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {

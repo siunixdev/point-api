@@ -2,7 +2,7 @@ const db = require("../models")
 
 const Role = db.role
 
-function initial() {
+const initial = () => {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Role({
